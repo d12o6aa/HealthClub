@@ -1,4 +1,5 @@
 package healthclub;
+import java.util.*;
 
 public class Member extends User {
     private int memberId;
