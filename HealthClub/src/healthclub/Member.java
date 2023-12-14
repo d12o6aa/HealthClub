@@ -24,9 +24,11 @@ public class Member extends User {
         this.fileManager = new FileManager("member_data.txt");
     }
 
-    public Member() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    Member() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    
 
     public String getName() {
         return name;

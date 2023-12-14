@@ -15,6 +15,7 @@ public class administrative {
     private String username;
     private String password;
     private FileManager fileManager;
+    private User user;
     private String subscriptionEndDateFilePath;
 
     public administrative(int adminId, String username, String password) {
@@ -138,20 +139,32 @@ public class administrative {
         } while (choice != 0);
     }
 
+   
+    public void alterCredentials() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter new username: ");
+        String newUsername = scanner.next();
+
+        System.out.print("Enter new password: ");
+        String newPassword = scanner.next();
+
+        this.username = newUsername;
+        this.password = newPassword;
+
+        System.out.println("Admin credentials updated successfully.");
+    }
     public void manageBilling() {
         // Implementation for managing billing
         // Retrieve a list of member IDs from the file or any other data source
         List<Integer> memberIds = fileManager.readMemberIds();
 
-        // Initialize the Billing module
-        Billing billingModule = new Billing(1); // Assuming billing ID is 1
+        Billing billingModule = new Billing(1); 
 
-        // Generate bills for each member
         for (int memberId : memberIds) {
             try {
                 billingModule.generateBill(memberId);
             } catch (Exception e) {
-                // Handle billing generation error
                 e.printStackTrace();
             }
         }
@@ -160,31 +173,23 @@ public class administrative {
     }
 
     public void generateMemberReports() {
-        // Implementation for generating member reports
-        // Retrieve a list of member IDs from the file or any other data source
-        List<Integer> memberIds = fileManager.readMemberIds();
+        int memberIds = user.getUserId();
 
-        // Initialize the Member module (assuming you have a Member class)
         Member memberModule = new Member();
-
-        // Generate reports for each member
-        for (int memberId : memberIds) {
+        
             try {
-                // Assuming you have a method to retrieve member information
-                String memberName = memberModule.getMemberName(memberId);
-                String subscriptionEndDate = memberModule.getSubscriptionEndDate(memberId);
+                String memberName = memberModule.getMemberName(memberIds);
+                String subscriptionEndDate = memberModule.getSubscriptionEndDate(memberIds);
 
-                // Generate and print the member report
-                System.out.println("Member Report for Member ID: " + memberId);
+                System.out.println("Member Report for Member ID: " + memberIds);
                 System.out.println("Name: " + memberName);
                 System.out.println("Subscription End Date: " + subscriptionEndDate);
 
                 System.out.println();
             } catch (Exception e) {
-                // Handle member report generation error
                 e.printStackTrace();
             }
-        }
+        
 
         System.out.println("Member reports generation complete.");
     }
