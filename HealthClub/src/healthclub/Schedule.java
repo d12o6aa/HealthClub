@@ -1,24 +1,54 @@
 package healthclub;
-import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Schedule {
+public class Schedule implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int scheduleId;
-    private Date date;
-    private Time time;
-    private List<Integer> classIds;
+    private String day;
+    private String time;
 
-    public Schedule(int scheduleId, Date date, Time time) {
+    public Schedule(int scheduleId, String day, String time) {
         this.scheduleId = scheduleId;
-        this.date = date;
+        this.day = day;
         this.time = time;
-        this.classIds = new ArrayList<>();
     }
 
-    public void addClass(int classId) {
-        // Implementation for adding a class to the schedule
+    // Getter methods...
+
+    @Override
+    public String toString() {
+        return day + " at " + time;
     }
 
-    public void removeClass(int classId) {
-        // Implementation for removing a class from the schedule
+    // Method to save schedules to a file
+    public static void saveSchedulesToFile(List<Schedule> schedules, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(schedules);
+            System.out.println("Schedules saved to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to read schedules from a file
+    public static List<Schedule> readSchedulesFromFile(String filePath) {
+        List<Schedule> schedules = new ArrayList<>();
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            Object obj = ois.readObject();
+            if (obj instanceof List) {
+                schedules = (List<Schedule>) obj;
+                System.out.println("Schedules loaded from file successfully.");
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return schedules;
     }
 }
+
+
